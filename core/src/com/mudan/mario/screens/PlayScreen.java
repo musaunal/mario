@@ -25,6 +25,7 @@ import com.mudan.mario.MarioBros;
 import com.mudan.mario.scenes.Hud;
 import com.mudan.mario.sprites.Mario;
 import com.mudan.mario.tools.B2WorldCreator;
+import com.mudan.mario.tools.WorldContactListener;
 
 /**
  * Created by musa on 27.07.2017.
@@ -63,6 +64,8 @@ public class PlayScreen implements Screen {
 
         new B2WorldCreator(world,map);
         player = new Mario(world, this);
+
+        world.setContactListener(new WorldContactListener());
     }
 
     public void handleInput(float dt){
