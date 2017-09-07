@@ -20,11 +20,11 @@ public class Hud implements Disposable{
     public Stage stage;
     private Viewport viewport;
     private Integer wordTimer;
-    private Integer score;
+    private static Integer score;
     private float timeCount;
 
     Label countdownLabel;
-    Label scoreLabel;
+    static Label scoreLabel;
     Label timeLabel;
     Label worldLabel;
     Label marioLabel;
@@ -58,6 +58,20 @@ public class Hud implements Disposable{
         table.add(countdownLabel).expandX();
 
         stage.addActor(table);
+    }
+
+    public void update(float dt){
+        timeCount += dt;
+        if (timeCount >= 1){
+            wordTimer--;
+            countdownLabel.setText(String.format("%03d", wordTimer));
+            timeCount =0;
+        }
+    }
+
+    public static void addScore(int value){
+        score += value;
+        scoreLabel.setText(String.format("%06d", score));
     }
 
     @Override
