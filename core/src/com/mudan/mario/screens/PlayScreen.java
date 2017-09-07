@@ -34,18 +34,14 @@ import com.mudan.mario.tools.WorldContactListener;
 public class PlayScreen implements Screen {
     private MarioBros game;
     private TextureAtlas atlas;
-
     private OrthographicCamera gamecam;
     private Viewport gamePort;      // vievportlar layout benzeri şeyler duruma göre ekranı sclae ediyorlar
     private Hud hud;
-
     private TmxMapLoader mapLoader;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
-
     private World world;
     private Box2DDebugRenderer b2dr;
-
     private Mario player;
 
     public PlayScreen(MarioBros game){
@@ -75,7 +71,6 @@ public class PlayScreen implements Screen {
              player.b2body.applyLinearImpulse(new Vector2(0.1f, 0) , player.b2body.getWorldCenter(), true);
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2)
             player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0) , player.b2body.getWorldCenter(), true);
-
     }
 
     public void update(float dt){

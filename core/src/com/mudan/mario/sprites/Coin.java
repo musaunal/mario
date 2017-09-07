@@ -17,6 +17,7 @@ public class Coin extends InteracticeTileObject {
     public Coin(World world, TiledMap map, Rectangle bounds){
         super(world,map,bounds);
         fixture.setUserData(this);
+        setCategoryFilter(MarioBros.COIN_BIT);
     }
 
     @Override

@@ -32,7 +32,7 @@ public class Mario extends Sprite {
     private boolean runningRight;
 
     public Mario (World world, PlayScreen screen){
-        super(screen.getAtlas().findRegion("little_mario"));
+        super(screen.getAtlas().findRegion("little_mario"));        // texturePackin içinden çektik
         this.world = world;
         currentState = State.STANDING;
         previousState = State.STANDING;
@@ -44,7 +44,6 @@ public class Mario extends Sprite {
             frames.add(new TextureRegion(getTexture(), i*16 , 11, 16, 16));
         marioRun = new Animation<TextureRegion>(0.1f, frames);
         frames.clear();
-
         for (int i = 4; i<6; i++)
             frames.add(new TextureRegion(getTexture() , i*16, 11 ,16, 16));
         marioJump = new Animation<TextureRegion>(0.1f, frames);
@@ -106,16 +105,18 @@ public class Mario extends Sprite {
         b2body = world.createBody(bdef);
 
         FixtureDef fdef = new FixtureDef();
-        CircleShape shape = new CircleShape();
+        CircleShape shape = new CircleShape();      // gövde
         shape.setRadius(6/MarioBros.PPM);
+        fdef.filter.categoryBits = MarioBros.MARIO_BIT;
+        fdef.filter.maskBits = MarioBros.DEFAULT_BIT | MarioBros.BRICK_BIT | MarioBros.COIN_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef);
 
-        EdgeShape head = new EdgeShape();
+        EdgeShape head = new EdgeShape();       // kafa
         head.set(new Vector2(-2/ MarioBros.PPM, 8/ MarioBros.PPM), new Vector2( 2/ MarioBros.PPM, 8/MarioBros.PPM));
         fdef.shape = head;
-        fdef.isSensor = true;
+        fdef.isSensor = true;       // A sensor shape collect collision data but not renponse collision
 
         b2body.createFixture(fdef).setUserData("head");
 

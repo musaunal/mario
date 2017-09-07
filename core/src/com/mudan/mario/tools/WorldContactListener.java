@@ -14,14 +14,14 @@ import com.mudan.mario.sprites.InteracticeTileObject;
 public class WorldContactListener implements ContactListener {
     @Override
     public void beginContact(Contact contact) {
-        Fixture fixA = contact.getFixtureA();
+        Fixture fixA = contact.getFixtureA();   // collisionda iki nesne var temas eden ve edilen bir tanesi fixA diğeri fixB
         Fixture fixB = contact.getFixtureB();
 
-        if (fixA.getUserData() == "head" || fixB.getUserData() == "head"){
+        if (fixA.getUserData() == "head" || fixB.getUserData() == "head"){      // hangisinin head(temas eden) olduğunu bulduk
             Fixture head = fixA.getUserData() == "head" ? fixA : fixB;
             Fixture object = head == fixA ? fixB : fixA;
 
-            if (object.getUserData() instanceof InteracticeTileObject){
+            if (object.getUserData() instanceof InteracticeTileObject){     // temas edilene(objecte) onHeadHit çağırıldı , kafayla vurulduğu için
                 ((InteracticeTileObject)object.getUserData()).onHeadHit();
             }
         }
