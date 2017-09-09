@@ -25,6 +25,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mudan.mario.MarioBros;
 import com.mudan.mario.scenes.Hud;
+import com.mudan.mario.sprites.Enemy;
 import com.mudan.mario.sprites.Goomba;
 import com.mudan.mario.sprites.Mario;
 import com.mudan.mario.tools.B2WorldCreator;
@@ -47,7 +48,7 @@ public class PlayScreen implements Screen {
     private Box2DDebugRenderer b2dr;
     private Mario player;
     private Music music;
-    private Goomba goomba;
+    private B2WorldCreator creator;
 
     public PlayScreen(MarioBros game){
         atlas = new TextureAtlas("Mario_and_Enemies.pack");
@@ -62,7 +63,7 @@ public class PlayScreen implements Screen {
 
         world = new World(new Vector2(0,-10), true);
         b2dr = new Box2DDebugRenderer();
-        new B2WorldCreator(this);
+        creator = new B2WorldCreator(this);
 
         player = new Mario(this);
 
@@ -72,7 +73,7 @@ public class PlayScreen implements Screen {
         music.setLooping(true);
         music.setVolume(0.1f);
         music.play();
-        goomba = new Goomba(this, 5.64f, .16f);
+
     }
 
     public void handleInput(float dt){
@@ -88,7 +89,8 @@ public class PlayScreen implements Screen {
         handleInput(dt);
         world.step(1/60f, 6, 2);
         player.update(dt);
-        goomba.update(dt);
+        for (Enemy enemy : creator.getGoombas())
+            enemy.update(dt);
         hud.update(dt);
         gamecam.position.x = player.b2body.getPosition().x;
         gamecam.update();
@@ -114,7 +116,8 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
         player.draw(game.batch);
-        goomba.draw(game.batch);
+        for (Enemy enemy : creator.getGoombas())
+            enemy.draw(game.batch);
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);

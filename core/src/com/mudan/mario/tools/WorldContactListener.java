@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.mudan.mario.MarioBros;
 import com.mudan.mario.sprites.Enemy;
 import com.mudan.mario.sprites.InteracticeTileObject;
+import com.mudan.mario.sprites.Mario;
 
 /**
  * Created by musa on 6.09.2017.
@@ -45,6 +46,10 @@ public class WorldContactListener implements ContactListener {
                 break;
             case MarioBros.MARIO_BIT | MarioBros.ENEMY_BIT:
                 // mario dead;
+                break;
+            case MarioBros.ENEMY_BIT | MarioBros.ENEMY_BIT:
+                ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
+                ((Enemy)fixB.getUserData()).reverseVelocity(true, false);
                 break;
         }
     }
