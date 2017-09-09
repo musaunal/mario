@@ -109,13 +109,13 @@ public class Mario extends Sprite {
         shape.setRadius(6/MarioBros.PPM);
         fdef.filter.categoryBits = MarioBros.MARIO_BIT;
         fdef.filter.maskBits = MarioBros.GROUND_BIT | MarioBros.BRICK_BIT | MarioBros.COIN_BIT | MarioBros.ENEMY_BIT
-                | MarioBros.OBJECT_BIT | MarioBros.ENEMY_HEAD_BIT;
+                | MarioBros.OBJECT_BIT | MarioBros.ENEMY_HEAD_BIT | MarioBros.ITEM_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef);
 
         EdgeShape head = new EdgeShape();       // kafa
-        head.set(new Vector2(-2/ MarioBros.PPM, 8/ MarioBros.PPM), new Vector2( 2/ MarioBros.PPM, 8/MarioBros.PPM));
+        head.set(new Vector2(-2/ MarioBros.PPM, 6/ MarioBros.PPM), new Vector2( 2/ MarioBros.PPM, 8/MarioBros.PPM));
         fdef.shape = head;
         fdef.isSensor = true;       // A sensor shape collect collision data but not renponse collision
 
