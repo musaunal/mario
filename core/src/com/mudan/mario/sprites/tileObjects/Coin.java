@@ -4,9 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.mudan.mario.MarioBros;
 import com.mudan.mario.scenes.Hud;
 import com.mudan.mario.screens.PlayScreen;
+import com.mudan.mario.sprites.Items.ItemDef;
+import com.mudan.mario.sprites.Items.Mushroom;
 
 /**
  * Created by musa on 22.08.2017.
@@ -27,8 +30,10 @@ public class Coin extends InteracticeTileObject {
         Gdx.app.log("Coin" , "Collision");
         if (getCell().getTile().getId() == BLANK_COIN)
             MarioBros.manager.get("audio/sounds/bump.wav", Sound.class).play();
-        else
+        else{
             MarioBros.manager.get("audio/sounds/coin.wav", Sound.class).play();
+            screen.spawnItem(new ItemDef(new Vector2(body.getPosition().x, body.getPosition().y +15 /MarioBros.PPM), Mushroom.class));
+        }
         getCell().setTile(tileSet.getTile(BLANK_COIN));
         Hud.addScore(100);
     }
