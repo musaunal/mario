@@ -7,27 +7,19 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.maps.Map;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mudan.mario.MarioBros;
 import com.mudan.mario.scenes.Hud;
-import com.mudan.mario.sprites.Enemy;
-import com.mudan.mario.sprites.Goomba;
+import com.mudan.mario.sprites.enemies.Enemy;
 import com.mudan.mario.sprites.Mario;
+import com.mudan.mario.sprites.enemies.Goomba;
 import com.mudan.mario.tools.B2WorldCreator;
 import com.mudan.mario.tools.WorldContactListener;
 
@@ -89,8 +81,11 @@ public class PlayScreen implements Screen {
         handleInput(dt);
         world.step(1/60f, 6, 2);
         player.update(dt);
-        for (Enemy enemy : creator.getGoombas())
+        for (Enemy enemy : creator.getGoombas()){
             enemy.update(dt);
+            if (enemy.getX() < player.getX() + 244 / MarioBros.PPM )
+                enemy.b2body.setActive(true);
+        }
         hud.update(dt);
         gamecam.position.x = player.b2body.getPosition().x;
         gamecam.update();

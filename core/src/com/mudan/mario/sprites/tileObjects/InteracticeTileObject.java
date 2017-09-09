@@ -1,4 +1,4 @@
-package com.mudan.mario.sprites;
+package com.mudan.mario.sprites.tileObjects;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;

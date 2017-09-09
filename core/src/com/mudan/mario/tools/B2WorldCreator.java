@@ -12,9 +12,9 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mudan.mario.MarioBros;
 import com.mudan.mario.screens.PlayScreen;
-import com.mudan.mario.sprites.Brick;
-import com.mudan.mario.sprites.Coin;
-import com.mudan.mario.sprites.Goomba;
+import com.mudan.mario.sprites.tileObjects.Brick;
+import com.mudan.mario.sprites.tileObjects.Coin;
+import com.mudan.mario.sprites.enemies.Goomba;
 
 /**
  * Created by musa on 22.08.2017.

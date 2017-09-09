@@ -1,7 +1,7 @@
-package com.mudan.mario.sprites;
+package com.mudan.mario.sprites.enemies;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -16,7 +16,7 @@ import com.mudan.mario.screens.PlayScreen;
  * Created by musa on 9.09.2017.
  */
 
-public class Goomba extends Enemy {
+public class Goomba extends com.mudan.mario.sprites.enemies.Enemy {
 
     private float stateTime;
     private Animation<TextureRegion> walkAnimation;
@@ -86,7 +86,8 @@ public class Goomba extends Enemy {
         setToDestroy = true;
     }
 
-    public void draw(SpriteBatch batch){
+    @Override
+    public void draw(Batch batch){
         if(!destroyed || stateTime <1)
             super.draw(batch);
     }

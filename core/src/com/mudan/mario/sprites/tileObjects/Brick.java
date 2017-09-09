@@ -1,10 +1,8 @@
-package com.mudan.mario.sprites;
+package com.mudan.mario.sprites.tileObjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.physics.box2d.World;
 import com.mudan.mario.MarioBros;
 import com.mudan.mario.scenes.Hud;
 import com.mudan.mario.screens.PlayScreen;

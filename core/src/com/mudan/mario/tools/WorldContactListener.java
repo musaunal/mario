@@ -6,9 +6,8 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.mudan.mario.MarioBros;
-import com.mudan.mario.sprites.Enemy;
-import com.mudan.mario.sprites.InteracticeTileObject;
-import com.mudan.mario.sprites.Mario;
+import com.mudan.mario.sprites.enemies.Enemy;
+import com.mudan.mario.sprites.tileObjects.InteracticeTileObject;
 
 /**
  * Created by musa on 6.09.2017.
@@ -38,7 +37,7 @@ public class WorldContactListener implements ContactListener {
                 else
                     ((Enemy)fixB.getUserData()).hitOnHead();
                 break;
-            case MarioBros.ENEMY_BIT | MarioBros.OBJECT_BIT:
+            case MarioBros.ENEMY_BIT | MarioBros.OBJECT_BIT :
                 if (fixA.getFilterData().categoryBits == MarioBros.ENEMY_BIT)
                     ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
                 else
