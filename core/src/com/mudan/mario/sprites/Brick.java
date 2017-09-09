@@ -7,14 +7,15 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mudan.mario.MarioBros;
 import com.mudan.mario.scenes.Hud;
+import com.mudan.mario.screens.PlayScreen;
 
 /**
  * Created by musa on 22.08.2017.
  */
 
 public class Brick extends InteracticeTileObject {
-    public Brick(World world, TiledMap map, Rectangle bounds){
-        super(world, map,bounds);
+    public Brick(PlayScreen screen, Rectangle bounds){
+        super(screen ,bounds);
         fixture.setUserData(this);
         setCategoryFilter(MarioBros.BRICK_BIT);
     }

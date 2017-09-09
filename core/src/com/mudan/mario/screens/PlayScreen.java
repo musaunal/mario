@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -24,6 +25,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mudan.mario.MarioBros;
 import com.mudan.mario.scenes.Hud;
+import com.mudan.mario.sprites.Goomba;
 import com.mudan.mario.sprites.Mario;
 import com.mudan.mario.tools.B2WorldCreator;
 import com.mudan.mario.tools.WorldContactListener;
@@ -45,6 +47,7 @@ public class PlayScreen implements Screen {
     private Box2DDebugRenderer b2dr;
     private Mario player;
     private Music music;
+    private Goomba goomba;
 
     public PlayScreen(MarioBros game){
         atlas = new TextureAtlas("Mario_and_Enemies.pack");
@@ -59,15 +62,17 @@ public class PlayScreen implements Screen {
 
         world = new World(new Vector2(0,-10), true);
         b2dr = new Box2DDebugRenderer();
+        new B2WorldCreator(this);
 
-        new B2WorldCreator(world,map);
-        player = new Mario(world, this);
+        player = new Mario(this);
 
         world.setContactListener(new WorldContactListener());
 
         music = MarioBros.manager.get("audio/music/mario_music.ogg", Music.class);
         music.setLooping(true);
+        music.setVolume(0.3f);
         music.play();
+        goomba = new Goomba(this,.32f, .32f);
     }
 
     public void handleInput(float dt){
@@ -83,6 +88,7 @@ public class PlayScreen implements Screen {
         handleInput(dt);
         world.step(1/60f, 6, 2);
         player.update(dt);
+        goomba.update(dt);
         hud.update(dt);
         gamecam.position.x = player.b2body.getPosition().x;
         gamecam.update();
@@ -108,10 +114,19 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
         player.draw(game.batch);
+        goomba.draw(game.batch);
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
+    }
+
+    public TiledMap getMap(){
+        return map;
+    }
+
+    public  World getWorld(){
+        return world;
     }
 
     @Override

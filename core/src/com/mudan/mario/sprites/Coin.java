@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mudan.mario.MarioBros;
 import com.mudan.mario.scenes.Hud;
+import com.mudan.mario.screens.PlayScreen;
 
 /**
  * Created by musa on 22.08.2017.
@@ -16,8 +17,8 @@ import com.mudan.mario.scenes.Hud;
 public class Coin extends InteracticeTileObject {
     private TiledMapTileSet tileSet;
     private final int BLANK_COIN =28;       // boş altın tuğlasının tile id'si
-    public Coin(World world, TiledMap map, Rectangle bounds){
-        super(world,map,bounds);
+    public Coin(PlayScreen screen, Rectangle bounds){
+        super(screen,bounds);
         tileSet = map.getTileSets().getTileSet("tileset_gutter");
         fixture.setUserData(this);
         setCategoryFilter(MarioBros.COIN_BIT);
