@@ -27,7 +27,7 @@ public class Coin extends InteracticeTileObject {
 
     @Override
     public void onHeadHit() {
-        Gdx.app.log("Coin" , "Collision");
+ //       Gdx.app.log("Coin" , "Collision");
         if (getCell().getTile().getId() == BLANK_COIN)
             MarioBros.manager.get("audio/sounds/bump.wav", Sound.class).play();
         else{

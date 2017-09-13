@@ -112,15 +112,15 @@ public class Mario extends Sprite {
                 | MarioBros.OBJECT_BIT | MarioBros.ENEMY_HEAD_BIT | MarioBros.ITEM_BIT;
 
         fdef.shape = shape;
-        b2body.createFixture(fdef);
+        b2body.createFixture(fdef).setUserData(this);
 
         EdgeShape head = new EdgeShape();       // kafa
         head.set(new Vector2(-2/ MarioBros.PPM, 6/ MarioBros.PPM), new Vector2( 2/ MarioBros.PPM, 8/MarioBros.PPM));
         fdef.shape = head;
+        fdef.filter.categoryBits = MarioBros.MARIO_HEAD_BIT;
         fdef.isSensor = true;       // A sensor shape collect collision data but not renponse collision
 
-        b2body.createFixture(fdef).setUserData("head");
-
+        b2body.createFixture(fdef).setUserData(this);
     }
 
 }

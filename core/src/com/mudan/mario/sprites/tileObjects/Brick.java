@@ -20,7 +20,7 @@ public class Brick extends InteracticeTileObject {
 
     @Override
     public void onHeadHit() {
-        Gdx.app.log("Brick" , "Collision");
+      //  Gdx.app.log("Brick" , "Collision");
         setCategoryFilter(MarioBros.DESTROYED_BIT);    // mariomuz DESROYED_BIT ile collision yapamadığı için yok tuğla kırılmış oluyor
         getCell().setTile(null);
         Hud.addScore(200);
