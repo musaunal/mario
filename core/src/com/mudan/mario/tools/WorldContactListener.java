@@ -23,32 +23,16 @@ public class WorldContactListener implements ContactListener {
 
         int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 
-     /*   if (fixA.getUserData() == "head" || fixB.getUserData() == "head"){      // hangisinin head(temas eden) olduğunu bulduk
+        if (fixA.getUserData() == "head" || fixB.getUserData() == "head"){      // hangisinin head(temas eden) olduğunu bulduk
             Fixture head = fixA.getUserData() == "head" ? fixA : fixB;
             Fixture object = head == fixA ? fixB : fixA;
 
             if (object.getUserData() instanceof InteracticeTileObject){     // temas edilene(objecte) onHeadHit çağırıldı , kafayla vurulduğu için
                 ((InteracticeTileObject)object.getUserData()).onHeadHit();
             }
-        }*/
+        }
 
         switch (cDef){
-            case MarioBros.BRICK_BIT | MarioBros.MARIO_HEAD_BIT:
-                if (fixA.getFilterData().categoryBits == MarioBros.MARIO_HEAD_BIT){
-                    ((InteracticeTileObject)(fixB.getUserData())).onHeadHit();
-                }
-                else if (fixB.getFilterData().categoryBits == MarioBros.MARIO_HEAD_BIT){
-                    ((InteracticeTileObject)(fixA.getUserData())).onHeadHit();
-                }
-                break;
-            case MarioBros.COIN_BIT | MarioBros.MARIO_HEAD_BIT:
-                if (fixA.getFilterData().categoryBits == MarioBros.MARIO_HEAD_BIT){
-                    ((InteracticeTileObject)(fixB.getUserData())).onHeadHit();
-                }
-                else if (fixB.getFilterData().categoryBits == MarioBros.MARIO_HEAD_BIT){
-                    ((InteracticeTileObject)(fixA.getUserData())).onHeadHit();
-                }
-                break;
             case MarioBros.ENEMY_HEAD_BIT | MarioBros.MARIO_BIT:
                 if (fixA.getFilterData().categoryBits == MarioBros.ENEMY_HEAD_BIT)
                     ((Enemy)fixA.getUserData()).hitOnHead();
