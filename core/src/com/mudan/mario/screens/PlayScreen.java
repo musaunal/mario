@@ -102,8 +102,8 @@ public class PlayScreen implements Screen {
 
     public void update(float dt){
         handleInput(dt);
-        handleSpawningItems();
         world.step(1/60f, 6, 2);
+        handleSpawningItems();
         player.update(dt);
         for (Enemy enemy : creator.getGoombas()){
             enemy.update(dt);

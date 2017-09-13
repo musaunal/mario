@@ -1,5 +1,8 @@
 package com.mudan.mario.sprites.tileObjects;
 
+import com.badlogic.gdx.maps.Map;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -13,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mudan.mario.MarioBros;
 import com.mudan.mario.screens.PlayScreen;
+import com.mudan.mario.sprites.Mario;
 
 /**
  * Created by musa on 22.08.2017.
@@ -26,12 +30,14 @@ public abstract class InteracticeTileObject {
     protected Body body;
     protected Fixture fixture;
     protected PlayScreen screen;
+    protected MapObject object;
 
-    public InteracticeTileObject(PlayScreen screen, Rectangle bounds){
+    public InteracticeTileObject(PlayScreen screen, MapObject object){
         this.screen = screen;
+        this.object = object;
         this.world = screen.getWorld();
         this.map = screen.getMap();
-        this.bounds = bounds;
+        this.bounds = ((RectangleMapObject) object).getRectangle();
 
         BodyDef bdef = new BodyDef();
         FixtureDef fdef = new FixtureDef();
@@ -46,7 +52,7 @@ public abstract class InteracticeTileObject {
         fixture = body.createFixture(fdef);
     }
 
-    public abstract void onHeadHit();
+    public abstract void onHeadHit(Mario mario);
     public  void setCategoryFilter(short filterBit){
         Filter filter = new Filter();
         filter.categoryBits = filterBit;
