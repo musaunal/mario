@@ -260,4 +260,12 @@ public class Mario extends Sprite {
             b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
         }
     }
+
+    public boolean isDead(){
+        return isMarioDead;
+    }
+
+    public float getStateTimer(){
+        return stateTimer;
+    }
 }
