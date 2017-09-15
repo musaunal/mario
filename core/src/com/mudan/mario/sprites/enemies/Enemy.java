@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mudan.mario.screens.PlayScreen;
+import com.mudan.mario.sprites.Mario;
 
 /**
  * Created by musa on 9.09.2017.
@@ -33,6 +34,6 @@ public  abstract class Enemy extends Sprite {
     }
 
     protected abstract void defineEnemy();
-    public abstract void hitOnHead();
+    public abstract void hitOnHead(Mario mario);
     public abstract void update(float dt);
 }

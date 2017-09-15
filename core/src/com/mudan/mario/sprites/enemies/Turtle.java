@@ -18,7 +18,9 @@ import com.mudan.mario.sprites.Mario;
  */
 
 public class Turtle extends Enemy {
-    public enum State {WALKING, SHELL}
+    public static final int KICK_LEFT_SPEED = -2;
+    public static final int KICK_RIGHT_SPEED = 2;
+    public enum State {WALKING, STANDING_SHELL, MOVING_SHEEL}
     public State currentState;
     public State previousState;
     private Animation<TextureRegion> walkAnimation;
@@ -67,23 +69,29 @@ public class Turtle extends Enemy {
         head.set(vertice);
 
         fdef.shape = head;
-        fdef.restitution = 0.5f;
+        fdef.restitution = 1.5f;
         fdef.filter.categoryBits = MarioBros.ENEMY_HEAD_BIT;
         b2body.createFixture(fdef).setUserData(this);
     }
 
     @Override
-    public void hitOnHead() {
-        if (currentState != State.SHELL){
-            currentState = State.SHELL;
+    public void hitOnHead(Mario mario) {
+        if (currentState != State.STANDING_SHELL){
+            currentState = State.STANDING_SHELL;
             velocity.x = 0;
+        }else {
+            kick(mario.getX() <= this.getX() ? KICK_RIGHT_SPEED : KICK_LEFT_SPEED);
         }
+    }
+
+    public State getCurrentState(){
+        return currentState;
     }
 
     @Override
     public void update(float dt) {
         setRegion(getFrame(dt));
-        if (currentState == State.SHELL && stateTime > 5){
+        if (currentState == State.STANDING_SHELL && stateTime > 5){
             currentState = State.WALKING;
             velocity.x = 1;
         }
@@ -95,7 +103,8 @@ public class Turtle extends Enemy {
         TextureRegion region;
 
         switch (currentState){
-            case SHELL:
+            case MOVING_SHEEL:
+            case STANDING_SHELL:
                 region = shell;
                 break;
             case WALKING:
@@ -113,5 +122,10 @@ public class Turtle extends Enemy {
         stateTime = currentState == previousState ? stateTime + dt : 0;
         previousState = currentState;
         return region;
+    }
+
+    public void kick(int speed){
+        velocity.x = speed;
+        currentState = State.MOVING_SHEEL;
     }
 }
