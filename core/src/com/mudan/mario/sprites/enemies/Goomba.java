@@ -53,6 +53,14 @@ public class Goomba extends com.mudan.mario.sprites.enemies.Enemy {
     }
 
     @Override
+    public void onEnemyHit(Enemy enemy) {
+        if (enemy instanceof Turtle && ((Turtle)enemy).currentState == Turtle.State.MOVING_SHEEL){
+            setToDestroy = true;
+        }else
+            reverseVelocity(true, false);
+    }
+
+    @Override
     protected void defineEnemy() {
         BodyDef bdef = new BodyDef();
         bdef.position.set(getX(), getY());

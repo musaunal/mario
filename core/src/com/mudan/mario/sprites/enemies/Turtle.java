@@ -2,10 +2,13 @@ package com.mudan.mario.sprites.enemies;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
@@ -20,7 +23,7 @@ import com.mudan.mario.sprites.Mario;
 public class Turtle extends Enemy {
     public static final int KICK_LEFT_SPEED = -2;
     public static final int KICK_RIGHT_SPEED = 2;
-    public enum State {WALKING, STANDING_SHELL, MOVING_SHEEL}
+    public enum State {WALKING, STANDING_SHELL, MOVING_SHEEL, DEAD}
     public State currentState;
     public State previousState;
     private Animation<TextureRegion> walkAnimation;
@@ -29,6 +32,7 @@ public class Turtle extends Enemy {
     private boolean setToDestroy;
     private boolean destroyed;
     private float stateTime;
+    private float deadRotationDegree;
 
     public Turtle(PlayScreen screen, float x, float y) {
         super(screen, x, y);
@@ -38,9 +42,10 @@ public class Turtle extends Enemy {
         shell = new TextureRegion(screen.getAtlas().findRegion("turtle"), 64, 0, 16 ,24);
         walkAnimation = new Animation<TextureRegion>(0.2f, frames);
         currentState = previousState = State.WALKING;
+        deadRotationDegree =0;
+        destroyed =false;
 
         setBounds(getX(),getY(), 16/ MarioBros.PPM, 24/ MarioBros.PPM);
-
     }
 
     @Override
@@ -69,7 +74,7 @@ public class Turtle extends Enemy {
         head.set(vertice);
 
         fdef.shape = head;
-        fdef.restitution = 1.5f;
+        fdef.restitution = 0.7f;
         fdef.filter.categoryBits = MarioBros.ENEMY_HEAD_BIT;
         b2body.createFixture(fdef).setUserData(this);
     }
@@ -91,12 +96,36 @@ public class Turtle extends Enemy {
     @Override
     public void update(float dt) {
         setRegion(getFrame(dt));
+        if (b2body.getPosition().y < 0)
+            killed();
         if (currentState == State.STANDING_SHELL && stateTime > 5){
             currentState = State.WALKING;
             velocity.x = 1;
         }
         setPosition(b2body.getPosition().x - getWidth()/2 , b2body.getPosition().y - 8/MarioBros.PPM);
-        b2body.setLinearVelocity(velocity);
+        if (currentState == State.DEAD){
+            deadRotationDegree +=3;
+            rotate(deadRotationDegree);
+            if (stateTime > 5 && !destroyed){
+                world.destroyBody(b2body);
+                destroyed = true;
+            }
+        }
+        else
+            b2body.setLinearVelocity(velocity);
+    }
+
+    @Override
+    public void onEnemyHit(Enemy enemy) {
+        if (enemy instanceof Turtle){
+            if (((Turtle) enemy).currentState == State.MOVING_SHEEL && currentState != State.MOVING_SHEEL){
+                killed();
+            }else if (currentState == State.MOVING_SHEEL && ((Turtle)enemy).currentState == State.WALKING)
+                return;
+            else
+                reverseVelocity(true, false);
+        }else if (currentState != State.MOVING_SHEEL)
+            reverseVelocity(true, false);
     }
 
     public TextureRegion getFrame (float dt){
@@ -127,5 +156,22 @@ public class Turtle extends Enemy {
     public void kick(int speed){
         velocity.x = speed;
         currentState = State.MOVING_SHEEL;
+    }
+
+    @Override
+    public void draw(Batch batch) {
+        if (!destroyed)
+            super.draw(batch);
+    }
+
+    public void killed(){
+        currentState = State.DEAD;
+        Filter filter = new Filter();
+        filter.maskBits = MarioBros.NOTHING_BIT;
+
+        for (Fixture fixture : b2body.getFixtureList()){
+            fixture.setUserData(filter);
+        }
+        b2body.applyLinearImpulse(new Vector2(0, 5f), b2body.getWorldCenter(), true);
     }
 }
