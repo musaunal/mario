@@ -1,5 +1,6 @@
 package com.mudan.mario.screens;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mudan.mario.MarioBros;
+import com.mudan.mario.scenes.Controller;
 import com.mudan.mario.scenes.Hud;
 import com.mudan.mario.sprites.Items.Item;
 import com.mudan.mario.sprites.Items.ItemDef;
@@ -39,6 +41,7 @@ public class PlayScreen implements Screen {
     private OrthographicCamera gamecam;
     private Viewport gamePort;      // vievportlar layout benzeri şeyler duruma göre ekranı sclae ediyorlar
     private Hud hud;
+    private Controller controller;
     private TmxMapLoader mapLoader;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
@@ -56,6 +59,7 @@ public class PlayScreen implements Screen {
         gamecam = new OrthographicCamera();
         gamePort = new FitViewport(MarioBros.V_WIDTH /MarioBros.PPM, MarioBros.V_HEIGHT /MarioBros.PPM, gamecam);
         hud = new Hud(game.batch);
+        controller = new Controller(game);
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("level1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / MarioBros.PPM);
@@ -92,13 +96,22 @@ public class PlayScreen implements Screen {
     }
 
     public void handleInput(float dt){
-        if(player.currentState != Mario.State.DEAD){
-            if (Gdx.input.isKeyJustPressed(Input.Keys.UP))
-                player.b2body.applyLinearImpulse(new Vector2(0,4f), player.b2body.getWorldCenter(), true);
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2)
-                 player.b2body.applyLinearImpulse(new Vector2(0.1f, 0) , player.b2body.getWorldCenter(), true);
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2)
-                player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0) , player.b2body.getWorldCenter(), true);
+        if(player.currentState != Mario.State.DEAD ){
+            if (Gdx.app.getType() == Application.ApplicationType.Desktop)
+                if (Gdx.input.isKeyJustPressed(Input.Keys.UP))
+                    player.b2body.applyLinearImpulse(new Vector2(0,4f), player.b2body.getWorldCenter(), true);
+                if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2)
+                     player.b2body.applyLinearImpulse(new Vector2(0.1f, 0) , player.b2body.getWorldCenter(), true);
+                if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2)
+                    player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0) , player.b2body.getWorldCenter(), true);
+            else
+                if(controller.isRigthPressed() && player.b2body.getLinearVelocity().x <= 2){
+                    player.b2body.applyLinearImpulse(new Vector2(0.1f, 0) , player.b2body.getWorldCenter(), true);
+                }else if (controller.isLeftPressed() && player.b2body.getLinearVelocity().x >= -2){
+                    player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0) , player.b2body.getWorldCenter(), true);
+                }else if (Gdx.input.justTouched()){
+                    player.b2body.applyLinearImpulse(new Vector2(0,4f), player.b2body.getWorldCenter(), true);
+                }
         }
     }
 
@@ -149,6 +162,9 @@ public class PlayScreen implements Screen {
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
+
+        if (Gdx.app.getType() == Application.ApplicationType.Android)
+            controller.draw();
 
         if (gameOver()){
             game.setScreen(new GameOverScreen(game));
