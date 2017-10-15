@@ -26,7 +26,7 @@ import com.mudan.mario.sprites.enemies.Turtle;
 
 public class Mario extends Sprite {
 
-    public enum State {FALLING , JUMPING , RUNNING , STANDING , GROWING , DEAD};
+    public enum State {FALLING , JUMPING , RUNNING , STANDING , GROWING , DEAD}
     public State currentState;
     public State previousState;
     public World world;
