@@ -1,6 +1,7 @@
 package com.mudan.mario.tools;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -61,12 +62,50 @@ public class WorldContactListener implements ContactListener {
                 else
                     ((Item)fixB.getUserData()).reverseVelocity(true, false);
                 break;
-            case MarioBros.ITEM_BIT| MarioBros.MARIO_BIT:
+            case MarioBros.ITEM_BIT | MarioBros.MARIO_BIT:
                 if (fixA.getFilterData().categoryBits == MarioBros.ITEM_BIT)
                     ((Item)fixA.getUserData()).use((Mario)fixB.getUserData());
                 else
                     ((Item)fixB.getUserData()).use((Mario)fixA.getUserData());
                 break;
+            case MarioBros.MARIO_BIT | MarioBros.GROUND_BIT:
+                if (fixA.getFilterData().categoryBits == MarioBros.MARIO_BIT)
+                    ((Mario)fixA.getUserData()).b2body.applyLinearImpulse(
+                            new Vector2(((Mario)fixA.getUserData()).b2body.getLinearVelocity().x * -1, 0)
+                            , ((Mario)fixA.getUserData()).b2body.getWorldCenter()
+                            , true);
+                else
+                    ((Mario)fixB.getUserData()).b2body.applyLinearImpulse(
+                            new Vector2(((Mario)fixB.getUserData()).b2body.getLinearVelocity().x * -1, 0)
+                            , ((Mario)fixB.getUserData()).b2body.getWorldCenter()
+                            , true);
+                break;
+            case MarioBros.MARIO_BIT | MarioBros.BRICK_BIT:
+            case MarioBros.MARIO_BIT | MarioBros.COIN_BIT:
+                if (fixA.getFilterData().categoryBits == MarioBros.MARIO_BIT)
+                    ((Mario)fixA.getUserData()).b2body.applyLinearImpulse(
+                            new Vector2(((Mario)fixA.getUserData()).b2body.getLinearVelocity().x * -3, 0)
+                            , ((Mario)fixA.getUserData()).b2body.getWorldCenter()
+                            , true);
+                else
+                    ((Mario)fixB.getUserData()).b2body.applyLinearImpulse(
+                            new Vector2(((Mario)fixB.getUserData()).b2body.getLinearVelocity().x * -3, 0)
+                            , ((Mario)fixB.getUserData()).b2body.getWorldCenter()
+                            , true);
+                break;
+            case MarioBros.MARIO_BIT | MarioBros.OBJECT_BIT:
+                if (fixA.getFilterData().categoryBits == MarioBros.MARIO_BIT)
+                    ((Mario)fixA.getUserData()).b2body.applyLinearImpulse(
+                            new Vector2(0, 10)
+                            , ((Mario)fixA.getUserData()).b2body.getWorldCenter()
+                            , true);
+                else
+                    ((Mario)fixB.getUserData()).b2body.applyLinearImpulse(
+                            new Vector2(0, 10)
+                            , ((Mario)fixB.getUserData()).b2body.getWorldCenter()
+                            , true);
+                break;
+
         }
     }
 

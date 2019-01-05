@@ -1,5 +1,6 @@
 package com.mudan.mario.sprites;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -94,6 +95,9 @@ public class Mario extends Sprite {
             defineBigMario();
         if (timeToRedefineMario)
             redefineMario();
+        if (b2body.getPosition().y *100 > MarioBros.V_HEIGHT){
+            b2body.applyLinearImpulse(new Vector2(b2body.getLinearVelocity().x *-1, -20), b2body.getWorldCenter(), true);
+        }
         if (!isMarioDead && b2body.getPosition().y < 0){
             MarioBros.manager.get("audio/music/mario_music.ogg", Music.class).stop();
             MarioBros.manager.get("audio/sounds/mariodie.wav", Sound.class).play();
