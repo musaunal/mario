@@ -41,6 +41,7 @@ public class GameOverScreen implements Screen {
         table.add(playAgainLabal).expandX().padTop(10f);
 
         stage.addActor(table);
+        MarioBros.level = 0;
     }
 
     @Override
@@ -51,7 +52,7 @@ public class GameOverScreen implements Screen {
     @Override
     public void render(float delta) {
         if (Gdx.input.justTouched()){
-            game.setScreen(new PlayScreen((MarioBros)game));
+            game.setScreen(new PlayScreen((MarioBros)game , "lvl1.tmx"));
             dispose();
         }
         Gdx.gl.glClearColor(0,0,0,1);

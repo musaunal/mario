@@ -25,16 +25,21 @@ import com.mudan.mario.sprites.enemies.Goomba;
 public class B2WorldCreator {
     private Array<Goomba> goombas;
     private Array<Turtle> turtles;
-    public B2WorldCreator (PlayScreen screen){
+    private int[] indexes;
+    public B2WorldCreator (PlayScreen screen , int level){
         World world = screen.getWorld();
         TiledMap map = screen.getMap();
         BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
         Body body;
+        if (level == 0)
+            indexes = new int[]{4,5,7,6,9,8};
+        else if (level == 1)
+            indexes = new int[]{2,3,5,4,6,7};
 
         // zemin
-        for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)){
+        for (MapObject object : map.getLayers().get(indexes[0]).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             bdef.type = BodyDef.BodyType.StaticBody;
@@ -48,7 +53,7 @@ public class B2WorldCreator {
         }
 
         // boru
-        for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
+        for (MapObject object : map.getLayers().get(indexes[1]).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             bdef.type = BodyDef.BodyType.StaticBody;
@@ -63,22 +68,22 @@ public class B2WorldCreator {
         }
 
         // tuğla
-        for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
+        for (MapObject object : map.getLayers().get(indexes[2]).getObjects().getByType(RectangleMapObject.class)){
             new Brick(screen, object);
         }
 
         //altın
-        for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){
+        for (MapObject object : map.getLayers().get(indexes[3]).getObjects().getByType(RectangleMapObject.class)){
             new Coin(screen, object);
         }
 
         goombas = new Array<Goomba>();
-        for (MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)){
+        for (MapObject object : map.getLayers().get(indexes[4]).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             goombas.add(new Goomba(screen, rect.getX() /MarioBros.PPM, rect.getY() /MarioBros.PPM));
         }
         turtles = new Array<Turtle>();
-        for (MapObject object : map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)) {
+        for (MapObject object : map.getLayers().get(indexes[5]).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             turtles.add(new Turtle(screen, rect.getX() / MarioBros.PPM, rect.getY() / MarioBros.PPM));
         }

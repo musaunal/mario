@@ -26,62 +26,71 @@ public class WorldContactListener implements ContactListener {
 
         int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 
-        switch (cDef){
+        switch (cDef) {
             case MarioBros.MARIO_HEAD_BIT | MarioBros.BRICK_BIT:
             case MarioBros.MARIO_HEAD_BIT | MarioBros.COIN_BIT:
-                if(fixA.getFilterData().categoryBits == MarioBros.MARIO_HEAD_BIT)
-                    ((InteracticeTileObject) fixB.getUserData()).onHeadHit((Mario)fixA.getUserData() );
+                if (fixA.getFilterData().categoryBits == MarioBros.MARIO_HEAD_BIT)
+                    ((InteracticeTileObject) fixB.getUserData()).onHeadHit((Mario) fixA.getUserData());
                 else
-                    ((InteracticeTileObject) fixA.getUserData()).onHeadHit((Mario)fixB.getUserData());
+                    ((InteracticeTileObject) fixA.getUserData()).onHeadHit((Mario) fixB.getUserData());
                 break;
             case MarioBros.ENEMY_HEAD_BIT | MarioBros.MARIO_BIT:
                 if (fixA.getFilterData().categoryBits == MarioBros.ENEMY_HEAD_BIT)
-                    ((Enemy)fixA.getUserData()).hitOnHead((Mario)fixB.getUserData());
+                    ((Enemy) fixA.getUserData()).hitOnHead((Mario) fixB.getUserData());
                 else
-                    ((Enemy)fixB.getUserData()).hitOnHead((Mario)fixA.getUserData());
+                    ((Enemy) fixB.getUserData()).hitOnHead((Mario) fixA.getUserData());
                 break;
-            case MarioBros.ENEMY_BIT | MarioBros.OBJECT_BIT :
+            case MarioBros.ENEMY_BIT | MarioBros.OBJECT_BIT:
+            case MarioBros.ENEMY_BIT | MarioBros.BRICK_BIT:
+            case MarioBros.ENEMY_BIT | MarioBros.COIN_BIT:
                 if (fixA.getFilterData().categoryBits == MarioBros.ENEMY_BIT)
-                    ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
+                    ((Enemy) fixA.getUserData()).reverseVelocity(true, false);
                 else
-                    ((Enemy)fixB.getUserData()).reverseVelocity(true, false);
+                    ((Enemy) fixB.getUserData()).reverseVelocity(true, false);
                 break;
             case MarioBros.MARIO_BIT | MarioBros.ENEMY_BIT:
-                if(fixA.getFilterData().categoryBits == MarioBros.MARIO_BIT)
-                    ((Mario)fixA.getUserData()).hit((Enemy)fixB.getUserData());
+                if (fixA.getFilterData().categoryBits == MarioBros.MARIO_BIT)
+                    ((Mario) fixA.getUserData()).hit((Enemy) fixB.getUserData());
                 else
-                    ((Mario)fixB.getUserData()).hit((Enemy)fixA.getUserData());
+                    ((Mario) fixB.getUserData()).hit((Enemy) fixA.getUserData());
                 break;
             case MarioBros.ENEMY_BIT | MarioBros.ENEMY_BIT:
-                ((Enemy)fixA.getUserData()).onEnemyHit(((Enemy)fixB.getUserData()));
-                ((Enemy)fixB.getUserData()).onEnemyHit(((Enemy)fixA.getUserData()));
+                ((Enemy) fixA.getUserData()).onEnemyHit(((Enemy) fixB.getUserData()));
+                ((Enemy) fixB.getUserData()).onEnemyHit(((Enemy) fixA.getUserData()));
                 break;
-            case MarioBros.ITEM_BIT | MarioBros.OBJECT_BIT :
+            case MarioBros.ITEM_BIT | MarioBros.OBJECT_BIT:
                 if (fixA.getFilterData().categoryBits == MarioBros.ITEM_BIT)
-                    ((Item)fixA.getUserData()).reverseVelocity(true, false);
+                    ((Item) fixA.getUserData()).reverseVelocity(true, false);
                 else
-                    ((Item)fixB.getUserData()).reverseVelocity(true, false);
+                    ((Item) fixB.getUserData()).reverseVelocity(true, false);
                 break;
             case MarioBros.ITEM_BIT | MarioBros.MARIO_BIT:
                 if (fixA.getFilterData().categoryBits == MarioBros.ITEM_BIT)
-                    ((Item)fixA.getUserData()).use((Mario)fixB.getUserData());
+                    ((Item) fixA.getUserData()).use((Mario) fixB.getUserData());
                 else
-                    ((Item)fixB.getUserData()).use((Mario)fixA.getUserData());
+                    ((Item) fixB.getUserData()).use((Mario) fixA.getUserData());
                 break;
             case MarioBros.MARIO_BIT | MarioBros.GROUND_BIT:
                 if (fixA.getFilterData().categoryBits == MarioBros.MARIO_BIT)
-                    ((Mario)fixA.getUserData()).b2body.applyLinearImpulse(
-                            new Vector2(((Mario)fixA.getUserData()).b2body.getLinearVelocity().x * -1, 0)
-                            , ((Mario)fixA.getUserData()).b2body.getWorldCenter()
+                    ((Mario) fixA.getUserData()).b2body.applyLinearImpulse(
+                            new Vector2(((Mario) fixA.getUserData()).b2body.getLinearVelocity().x * -1, 0)
+                            , ((Mario) fixA.getUserData()).b2body.getWorldCenter()
                             , true);
                 else
-                    ((Mario)fixB.getUserData()).b2body.applyLinearImpulse(
-                            new Vector2(((Mario)fixB.getUserData()).b2body.getLinearVelocity().x * -1, 0)
-                            , ((Mario)fixB.getUserData()).b2body.getWorldCenter()
+                    ((Mario) fixB.getUserData()).b2body.applyLinearImpulse(
+                            new Vector2(((Mario) fixB.getUserData()).b2body.getLinearVelocity().x * -1, 0)
+                            , ((Mario) fixB.getUserData()).b2body.getWorldCenter()
                             , true);
                 break;
-            case MarioBros.MARIO_BIT | MarioBros.BRICK_BIT:
             case MarioBros.MARIO_BIT | MarioBros.COIN_BIT:
+                if (MarioBros.level == 0){
+                    if (fixA.getFilterData().categoryBits == MarioBros.MARIO_BIT)
+                        ((Mario) fixA.getUserData()).isLevelUp = true;
+                    else
+                        ((Mario) fixB.getUserData()).isLevelUp = true;
+                }
+                break;
+            case MarioBros.MARIO_BIT | MarioBros.BRICK_BIT:
                 if (fixA.getFilterData().categoryBits == MarioBros.MARIO_BIT)
                     ((Mario)fixA.getUserData()).b2body.applyLinearImpulse(
                             new Vector2(((Mario)fixA.getUserData()).b2body.getLinearVelocity().x * -3, 0)

@@ -53,7 +53,7 @@ public class PlayScreen implements Screen {
     private Array<Item> items;
     private LinkedBlockingQueue<ItemDef> itemsToSpawn;
 
-    public PlayScreen(MarioBros game){
+    public PlayScreen(MarioBros game , String level){
         atlas = new TextureAtlas("Mario_and_Enemies.pack");
         this.game = game;
         gamecam = new OrthographicCamera();
@@ -61,13 +61,13 @@ public class PlayScreen implements Screen {
         hud = new Hud(game.batch);
         controller = new Controller(game);
         mapLoader = new TmxMapLoader();
-        map = mapLoader.load("level1.tmx");
+        map = mapLoader.load(level);
         renderer = new OrthogonalTiledMapRenderer(map, 1 / MarioBros.PPM);
         gamecam.position.set(gamePort.getWorldWidth() / 2 , gamePort.getWorldHeight()/2,0);
 
         world = new World(new Vector2(0,-10), true);
-        b2dr = new Box2DDebugRenderer();
-        creator = new B2WorldCreator(this);
+//        b2dr = new Box2DDebugRenderer();
+        creator = new B2WorldCreator(this, MarioBros.level);
 
         player = new Mario(this);
 
@@ -107,15 +107,17 @@ public class PlayScreen implements Screen {
             else
                 if(controller.isRigthPressed() && player.b2body.getLinearVelocity().x <= 2){
                     player.b2body.applyLinearImpulse(new Vector2(0.035f, 0) , player.b2body.getWorldCenter(), true);
-                }else if (controller.isLeftPressed() && player.b2body.getLinearVelocity().x >= -2){
+                }
+                if (controller.isLeftPressed() && player.b2body.getLinearVelocity().x >= -2){
                     player.b2body.applyLinearImpulse(new Vector2(-0.035f, 0) , player.b2body.getWorldCenter(), true);
-                }else if (Gdx.input.justTouched()){
+                }
+                if (Gdx.input.justTouched()){
                     player.b2body.applyLinearImpulse(new Vector2(0,3f), player.b2body.getWorldCenter(), true);
                 }
         }
     }
 
-    public void update(float dt){
+    private void update(float dt){
         handleInput(dt);
         world.step(1/60f, 6, 2);
         handleSpawningItems();
@@ -135,10 +137,6 @@ public class PlayScreen implements Screen {
         renderer.setView(gamecam);          //  sadece kameranın gördüğü kısmı renderlamak için
     }
 
-    public void show() {
-
-    }
-
     public TextureAtlas getAtlas(){
         return atlas;
     }
@@ -149,7 +147,7 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);       //ekranı temizler
 
         renderer.render();
-        b2dr.render(world, gamecam.combined);
+//        b2dr.render(world, gamecam.combined);
 
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
@@ -168,6 +166,13 @@ public class PlayScreen implements Screen {
 
         if (gameOver()){
             game.setScreen(new GameOverScreen(game));
+            dispose();
+        }
+
+        if (player.isLevelUp){
+            player.isLevelUp = false;
+            MarioBros.level++;
+            game.setScreen(new PlayScreen(game, "level1.tmx"));
             dispose();
         }
     }
@@ -206,12 +211,16 @@ public class PlayScreen implements Screen {
 
     }
 
+    public void show() {
+
+    }
+
     @Override
     public void dispose() {
         map.dispose();
         renderer.dispose();
         world.dispose();
         hud.dispose();
-        b2dr.dispose();
+//        b2dr.dispose();
     }
 }

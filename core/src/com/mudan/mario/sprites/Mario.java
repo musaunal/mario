@@ -49,6 +49,7 @@ public class Mario extends Sprite {
     private boolean timeToDefineBigMario;
     private boolean timeToRedefineMario;
     private boolean isMarioDead;
+    public boolean isLevelUp = false;
 
     public Mario (PlayScreen screen){
         this.world = screen.getWorld();
@@ -99,14 +100,7 @@ public class Mario extends Sprite {
             b2body.applyLinearImpulse(new Vector2(b2body.getLinearVelocity().x *-1, -20), b2body.getWorldCenter(), true);
         }
         if (!isMarioDead && b2body.getPosition().y < 0){
-            MarioBros.manager.get("audio/music/mario_music.ogg", Music.class).stop();
-            MarioBros.manager.get("audio/sounds/mariodie.wav", Sound.class).play();
-            isMarioDead = true;
-            Filter filter = new Filter();
-            filter.maskBits = MarioBros.NOTHING_BIT;
-            for (Fixture fixture : b2body.getFixtureList())
-                fixture.setFilterData(filter);
-            b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
+            killMario();
         }
     }
 
@@ -270,16 +264,20 @@ public class Mario extends Sprite {
                 setBounds(getX(),getY(),getWidth(),getHeight()/2);
                 MarioBros.manager.get("audio/sounds/powerdown.wav", Sound.class).play();
             }else {
-                MarioBros.manager.get("audio/music/mario_music.ogg", Music.class).stop();
-                MarioBros.manager.get("audio/sounds/mariodie.wav", Sound.class).play();
-                isMarioDead = true;
-                Filter filter = new Filter();
-                filter.maskBits = MarioBros.NOTHING_BIT;
-                for (Fixture fixture : b2body.getFixtureList())
-                    fixture.setFilterData(filter);
-                b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
+                killMario();
             }
         }
+    }
+
+    public void killMario(){
+        MarioBros.manager.get("audio/music/mario_music.ogg", Music.class).stop();
+        MarioBros.manager.get("audio/sounds/mariodie.wav", Sound.class).play();
+        isMarioDead = true;
+        Filter filter = new Filter();
+        filter.maskBits = MarioBros.NOTHING_BIT;
+        for (Fixture fixture : b2body.getFixtureList())
+            fixture.setFilterData(filter);
+        b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
     }
 
     public boolean isDead(){

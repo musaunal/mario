@@ -28,6 +28,8 @@ public class MarioBros extends Game {
 	public static final short ITEM_BIT =256;
 	public static final short MARIO_HEAD_BIT =512;
 
+	public static int level = 0;
+
 	public SpriteBatch batch;
 	public static AssetManager manager;			// bu static yapıldı androidde test için düzenlenip normal yaılması lazım
 
@@ -48,7 +50,7 @@ public class MarioBros extends Game {
 
 		manager.finishLoading();
 
-		setScreen(new PlayScreen(this));
+		setScreen(new PlayScreen(this, "lvl1.tmx"));
 	}
 
 	@Override
