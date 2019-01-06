@@ -46,7 +46,7 @@ public class PlayScreen implements Screen {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private World world;
-    private Box2DDebugRenderer b2dr;
+//    private Box2DDebugRenderer b2dr;
     private Mario player;
     private Music music;
     private B2WorldCreator creator;
@@ -171,8 +171,14 @@ public class PlayScreen implements Screen {
 
         if (player.isLevelUp){
             player.isLevelUp = false;
-            MarioBros.level++;
-            game.setScreen(new PlayScreen(game, "level1.tmx"));
+            if(MarioBros.level == 0){
+                MarioBros.level++;
+                game.setScreen(new PlayScreen(game, "level1.tmx"));
+            }
+            else {
+                MarioBros.level--;
+                game.setScreen(new PlayScreen(game, "lvl1.tmx"));
+            }
             dispose();
         }
     }

@@ -1,13 +1,9 @@
 package com.mudan.mario;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mudan.mario.screens.PlayScreen;
 
@@ -27,6 +23,7 @@ public class MarioBros extends Game {
 	public static final short ENEMY_HEAD_BIT =128;
 	public static final short ITEM_BIT =256;
 	public static final short MARIO_HEAD_BIT =512;
+	public static final short GATE_BIT =1024;
 
 	public static int level = 0;
 

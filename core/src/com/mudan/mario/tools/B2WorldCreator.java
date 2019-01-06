@@ -17,6 +17,7 @@ import com.mudan.mario.sprites.enemies.Turtle;
 import com.mudan.mario.sprites.tileObjects.Brick;
 import com.mudan.mario.sprites.tileObjects.Coin;
 import com.mudan.mario.sprites.enemies.Goomba;
+import com.mudan.mario.sprites.tileObjects.Gate;
 
 /**
  * Created by musa on 22.08.2017.
@@ -34,9 +35,9 @@ public class B2WorldCreator {
         FixtureDef fdef = new FixtureDef();
         Body body;
         if (level == 0)
-            indexes = new int[]{4,5,7,6,9,8};
+            indexes = new int[]{4,5,7,6,9,8,10};
         else if (level == 1)
-            indexes = new int[]{2,3,5,4,6,7};
+            indexes = new int[]{2,3,5,4,6,7,8};
 
         // zemin
         for (MapObject object : map.getLayers().get(indexes[0]).getObjects().getByType(RectangleMapObject.class)){
@@ -72,7 +73,12 @@ public class B2WorldCreator {
             new Brick(screen, object);
         }
 
-        //altın
+        //gate
+        for (MapObject object : map.getLayers().get(indexes[6]).getObjects().getByType(RectangleMapObject.class)){
+            new Gate(screen, object);
+        }
+
+        //coin
         for (MapObject object : map.getLayers().get(indexes[3]).getObjects().getByType(RectangleMapObject.class)){
             new Coin(screen, object);
         }

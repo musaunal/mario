@@ -82,23 +82,21 @@ public class WorldContactListener implements ContactListener {
                             , ((Mario) fixB.getUserData()).b2body.getWorldCenter()
                             , true);
                 break;
-            case MarioBros.MARIO_BIT | MarioBros.COIN_BIT:
-                if (MarioBros.level == 0){
-                    if (fixA.getFilterData().categoryBits == MarioBros.MARIO_BIT)
-                        ((Mario) fixA.getUserData()).isLevelUp = true;
-                    else
-                        ((Mario) fixB.getUserData()).isLevelUp = true;
-                }
+            case MarioBros.MARIO_BIT | MarioBros.GATE_BIT:
+                if (fixA.getFilterData().categoryBits == MarioBros.MARIO_BIT)
+                    ((Mario) fixA.getUserData()).isLevelUp = true;
+                else
+                    ((Mario) fixB.getUserData()).isLevelUp = true;
                 break;
             case MarioBros.MARIO_BIT | MarioBros.BRICK_BIT:
                 if (fixA.getFilterData().categoryBits == MarioBros.MARIO_BIT)
                     ((Mario)fixA.getUserData()).b2body.applyLinearImpulse(
-                            new Vector2(((Mario)fixA.getUserData()).b2body.getLinearVelocity().x * -3, 0)
+                            new Vector2(((Mario)fixA.getUserData()).b2body.getLinearVelocity().x * -2, 0)
                             , ((Mario)fixA.getUserData()).b2body.getWorldCenter()
                             , true);
                 else
                     ((Mario)fixB.getUserData()).b2body.applyLinearImpulse(
-                            new Vector2(((Mario)fixB.getUserData()).b2body.getLinearVelocity().x * -3, 0)
+                            new Vector2(((Mario)fixB.getUserData()).b2body.getLinearVelocity().x * -2, 0)
                             , ((Mario)fixB.getUserData()).b2body.getWorldCenter()
                             , true);
                 break;
